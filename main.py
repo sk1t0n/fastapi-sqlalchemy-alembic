@@ -3,11 +3,7 @@ import uvicorn
 
 from endpoints import router
 
-import models
-from database import engine
-
-# Create database tables
-models.Base.metadata.create_all(bind=engine)
+# Create database tables: alembic upgrade head
 
 app = FastAPI()
 app.include_router(router)
