@@ -14,7 +14,9 @@ router = APIRouter()
 
 
 @router.post(
-    "/users", response_model=schemas.User, status_code=status.HTTP_201_CREATED)
+    "/users", response_model=schemas.User, status_code=status.HTTP_201_CREATED,
+    tags=["users"], summary="Create user"
+)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud_user.read_by_email(db, user.email)
     if db_user:
@@ -22,7 +24,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud_user.create(db, user)
 
 
-@router.get("/users", response_model=List[schemas.User])
+@router.get("/users", response_model=List[schemas.User],
+            tags=["users"], summary="Read users")
 def read_users(
     skip: int = 0, limit: int = USERS_PER_PAGE, db: Session = Depends(get_db)
 ):
@@ -36,12 +39,14 @@ def find_user(db: Session, user_id: int) -> models.User:
     return db_user
 
 
-@router.get("/users/{user_id}", response_model=schemas.User)
+@router.get("/users/{user_id}", response_model=schemas.User,
+            tags=["users"], summary="Read user")
 def read_user(user_id: int, db: Session = Depends(get_db)):
     return find_user(db, user_id)
 
 
-@router.put("/users/{user_id}", response_model=schemas.User)
+@router.put("/users/{user_id}", response_model=schemas.User,
+            tags=["users"], summary="Update user")
 def update_user(
     user_id: int, user_schema: schemas.UserUpdate,
     db: Session = Depends(get_db)
@@ -50,20 +55,24 @@ def update_user(
     return crud_user.update(db, db_user, user_schema)
 
 
-@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT,
+               tags=["users"], summary="Delete user")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = find_user(db, user_id)
     return crud_user.delete(db, db_user)
 
 
-@router.get("/items", response_model=List[schemas.Item])
+@router.get("/items", response_model=List[schemas.Item],
+            tags=["items"], summary="Read items")
 def read_items(
     skip: int = 0, limit: int = ITEMS_PER_PAGE, db: Session = Depends(get_db)
 ):
     return crud_item.read_all(db, skip, limit)
 
 
-@router.post("/users/{user_id}/items", status_code=status.HTTP_201_CREATED)
+@router.post("/users/{user_id}/items", status_code=status.HTTP_201_CREATED,
+             tags=["items"], summary="Create item for user",
+             description="Create item for user with id user_id")
 def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
