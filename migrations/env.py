@@ -15,7 +15,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from database import DB_URL
+from config import DB_URL
 
 ######################## --- MODELS FOR MIGRATIONS --- ########################
 from database import Base

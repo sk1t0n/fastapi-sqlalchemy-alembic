@@ -1,6 +1,7 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -12,7 +13,8 @@ import schemas
 router = APIRouter()
 
 
-@router.post("/users", response_model=schemas.User)
+@router.post(
+    "/users", response_model=schemas.User, status_code=status.HTTP_201_CREATED)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud_user.read_by_email(db, user.email)
     if db_user:
@@ -48,7 +50,7 @@ def update_user(
     return crud_user.update(db, db_user, user_schema)
 
 
-@router.delete("/users/{user_id}")
+@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = find_user(db, user_id)
     return crud_user.delete(db, db_user)
@@ -61,7 +63,7 @@ def read_items(
     return crud_item.read_all(db, skip, limit)
 
 
-@router.post("/users/{user_id}/items")
+@router.post("/users/{user_id}/items", status_code=status.HTTP_201_CREATED)
 def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
