@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
 
-import config
-from endpoints import router
+from core import config
+from api.routes import router
 
 # Create database tables: alembic upgrade head
 

@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Boolean, Integer, String, ForeignKey
+from sqlalchemy import Column, Boolean, Integer, String
 from sqlalchemy.orm import relationship
 
-from database import Base
+from db import Base
 
 
 class User(Base):
@@ -15,14 +15,3 @@ class User(Base):
     is_superuser = Column(Boolean(), default=False)
 
     items = relationship("Item", back_populates="owner")
-
-
-class Item(Base):
-    __tablename__ = "items"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-
-    owner = relationship("User", back_populates="items")

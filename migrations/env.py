@@ -5,7 +5,7 @@ import sys
 
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))
-)# BASE_DIR = root
+)  # BASE_DIR = root
 sys.path.append(BASE_DIR)
 
 from logging.config import fileConfig
@@ -15,12 +15,13 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config import DB_URL
+from core.config import DB_URL
 
 ######################## --- MODELS FOR MIGRATIONS --- ########################
-from database import Base
+from db import Base
 # To include a model in migrations, add a line here.
-from models import User, Item
+from models.user import User
+from models.item import Item
 ###############################################################################
 
 # this is the Alembic Config object, which provides

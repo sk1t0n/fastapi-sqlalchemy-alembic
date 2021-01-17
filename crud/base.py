@@ -3,9 +3,7 @@ from typing import List, Optional, Generic, TypeVar, Type
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from database import Base
-import models
-import schemas
+from db import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -51,23 +49,3 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         result = db.delete(db_obj)
         db.commit()
         return result
-
-
-class CRUDUser(CRUDBase[models.User, schemas.UserCreate, schemas.UserUpdate]):
-    def read_by_email(self, db: Session, email: str) -> Optional[models.User]:
-        return db.query(models.User).filter(models.User.email == email).first()
-
-
-class CRUDItem(CRUDBase[models.Item, schemas.ItemCreate, schemas.ItemUpdate]):
-    def create_item_for_user(
-        self, db: Session, user_id: int, item: schemas.ItemCreate
-    ) -> models.Item:
-        db_item = models.Item(**item.dict(), owner_id=user_id)
-        db.add(db_item)
-        db.commit()
-        db.refresh(db_item)
-        return db_item
-
-
-crud_user = CRUDUser(models.User)
-crud_item = CRUDItem(models.Item)
