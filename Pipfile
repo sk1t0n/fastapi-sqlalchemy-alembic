@@ -11,6 +11,11 @@ fastapi = "*"
 uvicorn = "*"
 sqlalchemy = "*"
 alembic = "*"
+pydantic = {extras = ["email"], version = "*"}
+python-multipart = "*"
+python-jose = "*"
+cryptography = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [requires]
 python_version = "3.8"
