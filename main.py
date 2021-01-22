@@ -26,7 +26,8 @@ app = FastAPI(
     description=config.PROJECT_DESCRIPTION,
     version=config.PROJECT_VERSION,
     openapi_tags=tags_metadata,
-    openapi_url=f"{config.API_V1_STR}/openapi.json"
+    openapi_url=f"{config.API_V1_STR}/openapi.json",
+    docs_url=f"{config.API_V1_STR}/docs"
 )
 app.include_router(router, prefix=config.API_V1_STR)
 
