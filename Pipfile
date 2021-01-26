@@ -8,13 +8,12 @@ flake8 = "*"
 
 [packages]
 fastapi = "*"
+pydantic = {extras = ["email"], version = "*"}
 uvicorn = "*"
 sqlalchemy = "*"
 alembic = "*"
-pydantic = {extras = ["email"], version = "*"}
 python-multipart = "*"
-python-jose = "*"
-cryptography = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 
 [requires]
