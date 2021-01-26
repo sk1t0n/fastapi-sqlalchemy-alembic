@@ -1,17 +1,21 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, EmailStr
+
+from .items import Item
 
 
 # Общие свойства
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
+    username: Optional[str] = None
     full_name: Optional[str] = None
 
 
 # Свойства для получения через API при создании пользователя
 class UserCreate(UserBase):
     email: EmailStr
+    username: str
     password: str
 
 
@@ -32,8 +36,9 @@ class UserInDBBase(UserBase):
 class User(UserInDBBase):
     is_active: bool
     is_superuser: bool
+    items: List[Item] = []
 
 
 # Дополнительные свойства, хранящиеся в БД
 class UserInDB(UserInDBBase):
-    hashed_password: str
+    password: str
