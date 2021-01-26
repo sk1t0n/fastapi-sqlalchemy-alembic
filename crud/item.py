@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 
 from .base import CRUDBase
@@ -14,6 +16,9 @@ class CRUDItem(CRUDBase[Item, ItemCreate, ItemUpdate]):
         db.commit()
         db.refresh(db_item)
         return db_item
+
+    def read_items_for_user(self, db: Session, user_id: int) -> List[Item]:
+        return db.query(Item).filter(Item.owner_id == user_id).all()
 
 
 crud_item = CRUDItem(Item)
